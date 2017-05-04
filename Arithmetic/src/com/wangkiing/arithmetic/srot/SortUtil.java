@@ -228,6 +228,10 @@ public class SortUtil {
 	
 	/**
 	* Heap Sort -堆排序
+	* 	创建一个堆
+	*	把堆顶元素(最大值)和堆尾元素互换
+	*	把堆的尺寸缩小1，并调用minHeapFixDown从新的堆顶元素开始进行堆调整
+	*	重复步骤2，直到堆的尺寸为1
 	*分类 -------------- 内部比较排序
 	* 数据结构 ---------- 数组
 	* 最差时间复杂度 ---- O(nlogn)
@@ -311,8 +315,78 @@ public class SortUtil {
 			minHeapFixDown(args,i,n);  
 	}
 	
+	/**
+	 * Quick Sort - 快速排序
+	 *快速排序使用分治策略(Divide and Conquer)来把一个序列分为两个子序列。步骤为：
+	 *从序列中挑出一个元素，作为"基准"(pivot).
+	 *把所有比基准值小的元素放在基准前面，所有比基准值大的元素放在基准的后面（相同的数可以到任一边），这个称为分区(partition)操作。
+	 *对每个分区递归地进行步骤1~3，递归的结束条件是序列的大小是0或1，这时整体已经被排好序了。
+	 *
+	 *分类 ------------ 内部比较排序
+     * 数据结构 --------- 数组
+     * 最差时间复杂度 ---- 每次选取的基准都是最大的元素（或者每次都是最小），导致每次只划分出了一个子序列，需要进行n-1次划分才能结束递归，时间复杂度为O(n^2)
+     * 最优时间复杂度 ---- 每次选取的基准都能使划分均匀，只需要logn次划分就能结束递归，时间复杂度为O(nlogn)
+     * 平均时间复杂度 ---- O(nlogn)
+     * 所需辅助空间 ------ O(logn)～O(n),主要是递归造成的栈空间的使用(用来保存left和right等局部变量),取决于递归树的深度
+     *                   一般为O(logn),最差为O(n)（基本有序的情况）
+     * 稳定性 ---------- 不稳定
+	 * @param args
+	 */
+	public static void quickSort(int[] args){
+		partition(args,0,args.length-1);
+	}
 	
-	
+	/**
+	 * 划分函数，分治解决
+	 * 1．i =L; j = R; 将基准数挖出形成第一个坑a[i]。
+	 * 2．j--由后向前找比它小的数，找到后挖出此数填前一个坑a[i]中。
+	 * 3．i++由前向后找比它大的数，找到后也挖出此数填到前一个坑a[j]中。
+	 * 4．再重复执行2，3二步，直到i==j，将基准数填入a[i]中。
+	 * @param args 数组
+	 * @param left 区间数据最左值
+	 * @param right 区间数据最右值
+	 * @return 返回左右的界限值
+	 */
+	private static void partition(int[] args,int left,int right){
+		if(left<right){
+			//从最右边开始挖坑
+			int temp = args[left];
+			int i = left;
+			int j = right;
+			//小于temp的放左边，大于temp的放右边
+			while(i<j){
+				//从右往左找，找到第一个小于temp的值
+				while(i<j&&args[j]>=temp){
+					j--;
+				}
+				//防止找过界
+				if(i<j){
+					//将a[j]填充到a[i]里
+					args[i] = args[j];
+					i++;
+				}
+				
+				//从左往右找，找到第一个大于temp的值	
+				while(i<j&&args[i]<=temp){
+					i++;
+				}
+				//防止找过界
+				if(i<j){
+					//将a[i]填充到a[j]里
+					args[j] = args[i];
+					j--;
+				}
+				
+					
+			}
+			//当j=i时，左右分配完毕，将temp放入args[i]中
+			args[i] = temp;
+			//递归调用
+			partition(args,0,i-1);
+			partition(args,i+1,right);
+		}
+		
+	}
 	/**
 	 * 数组toString
 	 * @param args 数组
