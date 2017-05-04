@@ -237,14 +237,16 @@ public class SortUtil {
 	* 稳定性 ------------ 不稳定
 	* @param args
 	 */
-	public static void heapSort(int[] args){
+	public static void minHeapSort(int[] args){
 		int index = args.length;
-		int[] newArgs = new int[index];
 		buildMinHeap(args);
-		for(int i =0;i<index;i++){
+		for (int i = index-1; i >=1; i--)  
+	    {  
+			int temp = args[i];
 			args[i] = args[0];
-			minHeapFixDown(args, args.length, index);
-		}
+			args[0]=temp;
+	        minHeapFixDown(args, 0, i);  
+	    }  
 	}
 	
 	/**
@@ -282,16 +284,19 @@ public class SortUtil {
 	private static void minHeapFixDown(int[] args,int i,int n){
 		int lastNode = args[i];
 		int j= 2*i+1;
-		while(2*i+1<n){
+		while(j<n){
+			//如果是右节点小，则j+1
 			if(j+1<n&&args[j+1]<args[j]){
 				j++;
 			}
+			//如果子节点均大于移动节点，则替换节点，反之则移动节点
 			if(args[j]>lastNode){
 				break;
 			}else{
 				args[i] = args[j];
 				args[j] = lastNode;
 				i=j;
+				j=2*i+1;
 			}
 		}
 	}
@@ -305,6 +310,7 @@ public class SortUtil {
 		for (int i=n/2-1;i>=0;i--)  
 			minHeapFixDown(args,i,n);  
 	}
+	
 	
 	
 	/**

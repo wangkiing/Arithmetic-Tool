@@ -121,7 +121,7 @@ public class SortTest {
 		
 		System.out.println("堆排序前:"+SortUtil.argsToString(args));
 		long before = System.currentTimeMillis();
-		SortUtil.heapSort(args);
+		SortUtil.minHeapSort(args);
 		long after = System.currentTimeMillis();
 		System.out.println("堆排序后:"+SortUtil.argsToString(args));
 		System.out.println("堆排序时间:"+(after-before));
