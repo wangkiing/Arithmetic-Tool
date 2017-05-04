@@ -1,7 +1,6 @@
 package com.wangkiing.arithmetic.srot;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.wangkiing.arithmetic.datastructure.DataStructureUtil;
 
 /**
  * 常用排序算法
@@ -243,77 +242,16 @@ public class SortUtil {
 	 */
 	public static void minHeapSort(int[] args){
 		int index = args.length;
-		buildMinHeap(args);
+		DataStructureUtil.buildMinHeap(args);
 		for (int i = index-1; i >=1; i--)  
 	    {  
 			int temp = args[i];
 			args[i] = args[0];
 			args[0]=temp;
-	        minHeapFixDown(args, 0, i);  
+			DataStructureUtil.minHeapFixDown(args, 0, i);  
 	    }  
 	}
 	
-	/**
-	 * 插入堆
-	 * 一般都用数组来表示堆，i结点的父结点下标就为(i – 1) / 2。
-	 * 它的左右子结点下标分别为2 * i + 1和2 * i + 2。如第0个结点左右子结点下标分别为1和2。
-	 * @param args 原来数组
-	 * @param i 插入值索引
-	 */
-	private static void minHeapFixUp(int[] args,int i){
-		int parent = (i-1) / 2;
-		int newNode= args[i];
-		while(parent>0&&i!=0){
-			if(args[parent]<=newNode){
-				break;
-			}else{
-				args[i] = args[parent];
-				args[parent] = newNode;
-				i=parent;
-				parent = (parent-1) / 2;
-			}
-		}
-		
-	}
-	
-	/**
-	 * 删除堆
-	 * 将最后一个数据的值赋给根结点，然后再从根结点开始进行一次从上向下的调整
-	 * 调整时先在左右儿子结点中找最小的，如果父结点比这个最小的子结点还小说明不需要调整了，
-	 * 反之将父结点和它交换后再考虑后面的结点。相当于从根结点将一个数据的“下沉”过程
-	 * @param args 原来数组
-	 * @param i 调整节点索引
-	 * @param n 节点总总数，即数组长度
-	 */
-	private static void minHeapFixDown(int[] args,int i,int n){
-		int lastNode = args[i];
-		int j= 2*i+1;
-		while(j<n){
-			//如果是右节点小，则j+1
-			if(j+1<n&&args[j+1]<args[j]){
-				j++;
-			}
-			//如果子节点均大于移动节点，则替换节点，反之则移动节点
-			if(args[j]>lastNode){
-				break;
-			}else{
-				args[i] = args[j];
-				args[j] = lastNode;
-				i=j;
-				j=2*i+1;
-			}
-		}
-	}
-		
-	/**
-	 * 建立堆
-	 * @param args
-	 */
-	private static void buildMinHeap(int[] args){
-		int n = args.length;
-		for (int i=n/2-1;i>=0;i--)  
-			minHeapFixDown(args,i,n);  
-	}
 	
 	/**
 	 * Quick Sort - 快速排序
