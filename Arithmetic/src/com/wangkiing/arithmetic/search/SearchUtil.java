@@ -61,6 +61,39 @@ public class SearchUtil {
 	 * @param a
 	 * @return
 	 */
+	public static int insertSearch(int[] args,int a,int low,int high){
+		int meddle = low + (a-args[low])/(args[high]-args[low])*(high-low+1);
+		if(args[meddle] == a){
+			return meddle;
+		}
+		if(args[meddle]>a){
+			return binarySearch(args,a,low,meddle-1);
+		}
+		if(args[meddle]<a){
+			return binarySearch(args,a,meddle+1,high);
+		}
+		return -1;
+	}
+	
+	/**
+	 * Insert Search二分查找
+	 * 基本思想：
+	 * 	如要在取值范围1 ~ 10000 之间 100 个元素从小到大均匀分布的数组中查找5， 我们自然会考虑从数组下标较小的开始查找。
+	 * 经过以上分析，折半查找这种查找方式，不是自适应的（也就是说是傻瓜式的）。二分查找中查找点计算如下：
+	 * 	mid=(low+high)/2, 即mid=low+1/2*(high-low);
+	 * 	通过类比，我们可以将查找的点改进为如下：
+	 * 	mid=low+ (key-a[low])/(a[high]-a[low]) *(high-low)，
+	 * 	也就是将上述的比例参数1/2改进为自适应的，根据关键字在整个有序表中所处的位置，让mid值的变化更靠近关键字key，这样也就间接地减少了比较次数。
+　　	 * 复杂度分析：
+	 *	最坏情况下，关键词比较次数为log2(n+1)，且期望时间复杂度为O(log2n)；
+　　	 * 注：
+	 *	折半查找的前提条件是需要有序表顺序存储，对于静态查找表，一次排序后不再变化，
+	 *  折半查找能得到不错的效率。但对于需要频繁执行插入或删除操作的数据集来说，
+	 *  维护有序的排序会带来不小的工作量，那就不建议使用。——《大话数据结构》
+	 * @param args
+	 * @param a
+	 * @return
+	 */
 	public static int binarySearch(int[] args,int a,int low,int high){
 		int meddle = low + (high-low+1)/2;
 		if(args[meddle] == a){
